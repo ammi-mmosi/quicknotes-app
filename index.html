@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -19,10 +20,12 @@
 
   <main>
 
+    <!-- Add Note Section -->
     <section>
       <h2>Add a note</h2>
 
       <form id="note-form">
+
         <div class="form-group">
           <label for="note-input">Note</label>
 
@@ -44,11 +47,21 @@
         </div>
 
         <button type="submit">Add Note</button>
+
       </form>
 
+      <!-- Live Counters -->
+      <div class="input-counts">
+        <p id="word-count">Words: 0</p>
+        <p id="char-count">0 / 200 characters</p>
+      </div>
+
       <p id="error-message"></p>
+
     </section>
 
+
+    <!-- Notes Section -->
     <section>
       <h2>Your notes</h2>
 
@@ -63,13 +76,16 @@
       <p id="note-count">You have no notes yet.</p>
 
       <ul id="notes-list"></ul>
+
     </section>
 
   </main>
+
 
   <footer>
     <p>&copy; 2026 QuickNotes</p>
   </footer>
 
 </body>
+
 </html>
