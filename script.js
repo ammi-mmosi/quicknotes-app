@@ -11,6 +11,7 @@ const noteCount = document.querySelector("#note-count");
 const wordCount = document.querySelector("#word-count");
 const charCount = document.querySelector("#char-count");
 const errorMessage = document.querySelector("#error-message");
+const clearAllBtn = document.querySelector("#clear-all-btn");
 
 
 // -------------------------
@@ -46,39 +47,41 @@ function updateInputCounts() {
 
   const text = noteInput.value;
 
-  // Character count includes every character typed.
+  // Count every character typed.
   const characters = text.length;
 
 
-  // Remove surrounding spaces before counting words.
+  // Remove surrounding spaces before
+  // calculating the word count.
   const trimmedText = text.trim();
 
   let words = 0;
 
   if (trimmedText !== "") {
 
-    // One or more spaces count as a separator.
     words = trimmedText.split(/\s+/).length;
 
   }
 
 
-  // Update the counters.
+  // Update word count.
   wordCount.textContent =
     `Words: ${words}`;
 
+
+  // Update character count.
   charCount.textContent =
     `${characters} / 200 characters`;
 
 
-  // Remove previous character warning classes.
+  // Remove previous warning states.
   charCount.classList.remove(
     "warning",
     "over"
   );
 
 
-  // More than 200 characters.
+  // Over the limit.
   if (characters > 200) {
 
     charCount.classList.add("over");
@@ -137,7 +140,7 @@ function render() {
     .toLowerCase();
 
 
-  // Find notes containing the search text.
+  // Find notes matching the search.
   const filteredNotes = notes.filter(function (note) {
 
     return note.text
@@ -147,7 +150,8 @@ function render() {
   });
 
 
-  // Show a message when search has no matches.
+  // Display a message if a search
+  // produces no results.
   if (
     searchText !== "" &&
     filteredNotes.length === 0
@@ -164,7 +168,7 @@ function render() {
   }
 
 
-  // Build each matching note.
+  // Display matching notes.
   filteredNotes.forEach(function (note) {
 
     const listItem =
@@ -184,7 +188,7 @@ function render() {
     const noteText =
       document.createElement("p");
 
-    // Use textContent for user-entered text.
+    // Use textContent for user input.
     noteText.textContent = note.text;
 
 
@@ -198,7 +202,10 @@ function render() {
     details.classList.add("note-details");
 
 
+    // -------------------------
     // Category
+    // -------------------------
+
     const category =
       document.createElement("span");
 
@@ -210,7 +217,10 @@ function render() {
       note.category;
 
 
+    // -------------------------
     // Date
+    // -------------------------
+
     const date =
       document.createElement("span");
 
@@ -237,6 +247,7 @@ function render() {
       "click",
       function () {
 
+        // Remove only the selected note.
         notes = notes.filter(
           function (item) {
 
@@ -246,11 +257,11 @@ function render() {
         );
 
 
-        // Save after deleting.
+        // Save the updated array.
         saveNotes();
 
 
-        // Update display.
+        // Update the display.
         render();
 
       }
@@ -274,13 +285,13 @@ function render() {
     listItem.appendChild(deleteButton);
 
 
-    // Add card to list.
+    // Add note card to the list.
     notesList.appendChild(listItem);
 
   });
 
 
-  // Update total note count.
+  // Update the total note count.
   updateCount();
 
 }
@@ -298,8 +309,7 @@ noteForm.addEventListener(
     event.preventDefault();
 
 
-    // Get note text and remove
-    // surrounding spaces.
+    // Get note text.
     const text =
       noteInput.value.trim();
 
@@ -358,19 +368,19 @@ noteForm.addEventListener(
     notes.push(newNote);
 
 
-    // Save updated notes.
+    // Save notes.
     saveNotes();
 
 
-    // Rebuild display.
+    // Update display.
     render();
 
 
-    // Clear input.
+    // Clear note input.
     noteInput.value = "";
 
 
-    // Reset both counters.
+    // Reset live counters.
     updateInputCounts();
 
   }
@@ -400,6 +410,39 @@ searchInput.addEventListener(
   function () {
 
     render();
+
+  }
+);
+
+
+// -------------------------
+// Clear All Notes
+// -------------------------
+
+clearAllBtn.addEventListener(
+  "click",
+  function () {
+
+    // Ask the user before deleting.
+    const confirmed =
+      confirm("Delete all notes?");
+
+
+    // Only delete when OK is selected.
+    if (confirmed) {
+
+      // Empty the notes array.
+      notes = [];
+
+
+      // Update localStorage.
+      saveNotes();
+
+
+      // Rebuild the page.
+      render();
+
+    }
 
   }
 );
